@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.rest.management.webengine.servlet.container.test">
+
+  <require>org.nuxeo.ecm.webengine.test.WebEngineComponentSetup</require>
+
+  <extension target="org.nuxeo.runtime.server" point="servlet">
+    <servlet context="/">
+      <servlet-name>Nuxeo Management JAXRS Servlet</servlet-name>
+      <servlet-class>org.nuxeo.ecm.webengine.app.jersey.WebEngineServlet</servlet-class>
+      <url-pattern>/site/management/*</url-pattern>
+      <init-param>
+        <param-name>application.name</param-name>
+        <param-value>management</param-value>
+      </init-param>
+    </servlet>
+
+  </extension>
+
+</component>
