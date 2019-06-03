@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 1
+Bundle-Name: Nuxeo Management REST API
+Bundle-SymbolicName: org.nuxeo.rest.management;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Vendor: Nuxeo
+Nuxeo-WebModule: org.nuxeo.rest.management.ManagementModule;name=management;host=management

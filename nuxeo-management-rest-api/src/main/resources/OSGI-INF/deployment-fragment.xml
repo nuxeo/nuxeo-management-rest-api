@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<fragment version="1">
+
+  <extension target="web#SERVLET">
+
+    <servlet>
+      <servlet-name>Nuxeo Management JAXRS Servlet</servlet-name>
+      <servlet-class>
+        org.nuxeo.ecm.webengine.app.jersey.WebEngineServlet
+      </servlet-class>
+      <init-param>
+        <param-name>application.name</param-name>
+        <param-value>management</param-value>
+      </init-param>
+    </servlet>
+    <servlet-mapping>
+      <servlet-name>Nuxeo Management JAXRS Servlet</servlet-name>
+      <url-pattern>/site/management/*</url-pattern>
+    </servlet-mapping>
+
+  </extension>
+
+</fragment>
