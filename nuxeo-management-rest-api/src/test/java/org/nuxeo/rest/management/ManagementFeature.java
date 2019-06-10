@@ -19,7 +19,6 @@
 
 package org.nuxeo.rest.management;
 
-import org.nuxeo.ecm.core.test.CoreFeature;
 import org.nuxeo.ecm.webengine.test.WebEngineFeature;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
