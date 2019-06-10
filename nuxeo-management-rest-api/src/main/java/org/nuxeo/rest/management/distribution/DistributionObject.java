@@ -15,19 +15,17 @@
  *
  * Contributors:
  *     Thomas Roger
+ *     Nour Al Kotob
  */
 
 package org.nuxeo.rest.management.distribution;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
+import org.nuxeo.ecm.admin.runtime.RuntimeInstrospection;
+import org.nuxeo.ecm.admin.runtime.SimplifiedServerInfo;
 import org.nuxeo.ecm.webengine.model.WebObject;
 import org.nuxeo.ecm.webengine.model.impl.DefaultObject;
 
@@ -39,10 +37,8 @@ public class DistributionObject extends DefaultObject {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Object doGet() {
-        Map<String, Serializable> map = new HashMap<>();
-        map.put("foo", "bar");
-        return Response.ok(map).build();
+    public SimplifiedServerInfo doGet() {
+        return RuntimeInstrospection.getInfo();
     }
 
 }

@@ -15,6 +15,7 @@
  *
  * Contributors:
  *     Thomas Roger
+ *     Nour Al Kotob
  */
 
 package org.nuxeo.rest.management;
@@ -23,14 +24,20 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.nuxeo.common.Environment;
+import org.nuxeo.ecm.core.io.marshallers.json.JsonAssert;
 import org.nuxeo.jaxrs.test.CloseableClientResponse;
 import org.nuxeo.jaxrs.test.JerseyClientHelper;
+import org.nuxeo.rest.management.distribution.SimplifiedServerInfoWriter;
+import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.nuxeo.runtime.test.runner.ServletContainerFeature;
@@ -65,12 +72,47 @@ public class TestDistributionObject {
 
     @Test
     public void testDistribution() throws IOException {
+        final String PRODUCT_NAME = "cool product name";
+        final String PRODUCT_VERSION = "cool product version";
+        final String DISTRIBUTION_NAME = "cool distribution name";
+        final String DISTRIBUTION_VERSION = "cool distribution version";
+        final String DISTRIBUTION_SERVER = "cool distribution server";
+        final String DISTRIBUTION_DATE = "cool distribution date";
+
+        Map<String, String> testProps = new HashMap<>();
+        testProps.put(Environment.PRODUCT_NAME, PRODUCT_NAME);
+        testProps.put(Environment.PRODUCT_VERSION, PRODUCT_VERSION);
+        testProps.put(Environment.DISTRIBUTION_NAME, DISTRIBUTION_NAME);
+        testProps.put(Environment.DISTRIBUTION_VERSION, DISTRIBUTION_VERSION);
+        testProps.put(Environment.DISTRIBUTION_SERVER, DISTRIBUTION_SERVER);
+        testProps.put(Environment.DISTRIBUTION_DATE, DISTRIBUTION_DATE);
+        Framework.getProperties().putAll(testProps);
+
         try (CloseableClientResponse response = get()) {
             assertEquals(200, response.getStatus());
             JsonNode node = mapper.readTree(response.getEntityInputStream());
-            JsonNode foo = node.get("foo");
-            assertNotNull(foo);
-            assertEquals("bar", foo.asText());
+            JsonNode value = node.get(Environment.PRODUCT_NAME);
+            assertEquals(PRODUCT_NAME, value.asText());
+            value = node.get(Environment.PRODUCT_VERSION);
+            assertEquals(PRODUCT_VERSION, value.asText());
+            value = node.get(Environment.DISTRIBUTION_NAME);
+            assertEquals(DISTRIBUTION_NAME, value.asText());
+            value = node.get(Environment.DISTRIBUTION_VERSION);
+            assertEquals(DISTRIBUTION_VERSION, value.asText());
+            value = node.get(Environment.DISTRIBUTION_SERVER);
+            assertEquals(DISTRIBUTION_SERVER, value.asText());
+            value = node.get(Environment.DISTRIBUTION_DATE);
+            assertEquals(DISTRIBUTION_DATE, value.asText());
+            value = node.get(SimplifiedServerInfoWriter.WARNINGS);
+            assertNotNull(value);
+            value = node.get(Environment.BUNDLES);
+            assertNotNull(value);
+            String flat = value.toString();
+            JsonAssert jAssert = JsonAssert.on(flat).get(0);
+            jAssert.get(SimplifiedServerInfoWriter.NAME).notNull();
+            jAssert.get(SimplifiedServerInfoWriter.VERSION).notNull();
+        } finally {
+            testProps.keySet().stream().forEach(key -> Framework.getProperties().remove(key));
         }
     }
 
