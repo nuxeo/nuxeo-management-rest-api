@@ -22,10 +22,9 @@ package org.nuxeo.rest.management;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.nuxeo.ecm.webengine.app.WebEngineExceptionMapper;
 import org.nuxeo.ecm.webengine.app.WebEngineModule;
 import org.nuxeo.ecm.webengine.jaxrs.coreiodelegate.JsonCoreIODelegate;
-
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 /**
  * @since 11.1
@@ -43,6 +42,7 @@ public class ManagementModule extends WebEngineModule {
     public Set<Object> getSingletons() {
         Set<Object> result = new HashSet<>();
         result.add(new JsonCoreIODelegate());
+        result.add(new WebEngineExceptionMapper());
         return result;
     }
 }
