@@ -23,53 +23,28 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
-import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.nuxeo.connect.identity.LogicalInstanceIdentifier;
 import org.nuxeo.connect.identity.LogicalInstanceIdentifier.InvalidCLID;
 import org.nuxeo.jaxrs.test.CloseableClientResponse;
-import org.nuxeo.jaxrs.test.JerseyClientHelper;
-import org.nuxeo.runtime.test.runner.Features;
-import org.nuxeo.runtime.test.runner.FeaturesRunner;
-import org.nuxeo.runtime.test.runner.ServletContainerFeature;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
 
 /**
  * @since 11.1
  */
-@RunWith(FeaturesRunner.class)
-@Features(ManagementFeature.class)
-public class TestClidObject {
+public class TestClidObject extends ManagementBaseTest {
 
-    public static final String CLID_PATH = "site/management/clid";
-
-    @Inject
-    protected ServletContainerFeature servletContainerFeature;
-
-    protected Client client;
-
-    protected ObjectMapper mapper;
-
-    @Before
-    public void setup() {
-        mapper = new ObjectMapper();
-        client = JerseyClientHelper.clientBuilder().setCredentials("Administrator", "Administrator").build();
-    }
+    public static final String PATH = "site/management/clid";
 
     @Test
     public void testClid() throws IOException, InvalidCLID {
         String expected = "choco--stick";
         new LogicalInstanceIdentifier(expected).save();
-        try (CloseableClientResponse response = get()) {
-            assertEquals(200, response.getStatus());
+        try (CloseableClientResponse response = httpClientRule.get(PATH)) {
+            assertEquals(HttpServletResponse.SC_OK, response.getStatus());
             JsonNode node = mapper.readTree(response.getEntityInputStream());
             JsonNode value = node.get("clid");
             assertEquals(expected, value.asText());
@@ -79,19 +54,8 @@ public class TestClidObject {
     @Test
     public void testNoClid() {
         LogicalInstanceIdentifier.cleanUp();
-        try (CloseableClientResponse response = get()) {
-            assertEquals(500, response.getStatus());
+        try (CloseableClientResponse response = httpClientRule.get(PATH)) {
+            assertEquals(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, response.getStatus());
         }
-    }
-
-    protected String getBaseURL() {
-        int port = servletContainerFeature.getPort();
-        return "http://localhost:" + port + "/";
-    }
-
-    protected CloseableClientResponse get() {
-        WebResource wr = client.resource(getBaseURL() + CLID_PATH);
-        WebResource.Builder builder = wr.getRequestBuilder();
-        return CloseableClientResponse.of(builder.get(ClientResponse.class));
     }
 }

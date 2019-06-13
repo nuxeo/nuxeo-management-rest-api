@@ -27,48 +27,23 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.nuxeo.common.Environment;
 import org.nuxeo.ecm.core.io.marshallers.json.JsonAssert;
 import org.nuxeo.jaxrs.test.CloseableClientResponse;
-import org.nuxeo.jaxrs.test.JerseyClientHelper;
 import org.nuxeo.rest.management.distribution.SimplifiedServerInfoWriter;
 import org.nuxeo.runtime.api.Framework;
-import org.nuxeo.runtime.test.runner.Features;
-import org.nuxeo.runtime.test.runner.FeaturesRunner;
-import org.nuxeo.runtime.test.runner.ServletContainerFeature;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
 
 /**
  * @since 11.1
  */
-@RunWith(FeaturesRunner.class)
-@Features(ManagementFeature.class)
-public class TestDistributionObject {
+public class TestDistributionObject extends ManagementBaseTest {
 
-    public static final String DISTRIBUTION_PATH = "site/management/distribution";
-
-    @Inject
-    protected ServletContainerFeature servletContainerFeature;
-
-    protected Client client;
-
-    protected ObjectMapper mapper;
-
-    @Before
-    public void setup() {
-        mapper = new ObjectMapper();
-        client = JerseyClientHelper.clientBuilder().setCredentials("Administrator", "Administrator").build();
-    }
+    public static final String PATH = "site/management/distribution";
 
     @Test
     public void testDistribution() throws IOException {
@@ -88,8 +63,8 @@ public class TestDistributionObject {
         testProps.put(Environment.DISTRIBUTION_DATE, DISTRIBUTION_DATE);
         Framework.getProperties().putAll(testProps);
 
-        try (CloseableClientResponse response = get()) {
-            assertEquals(200, response.getStatus());
+        try (CloseableClientResponse response = httpClientRule.get(PATH)) {
+            assertEquals(HttpServletResponse.SC_OK, response.getStatus());
             JsonNode node = mapper.readTree(response.getEntityInputStream());
             JsonNode value = node.get(Environment.PRODUCT_NAME);
             assertEquals(PRODUCT_NAME, value.asText());
@@ -114,16 +89,5 @@ public class TestDistributionObject {
         } finally {
             testProps.keySet().stream().forEach(key -> Framework.getProperties().remove(key));
         }
-    }
-
-    protected String getBaseURL() {
-        int port = servletContainerFeature.getPort();
-        return "http://localhost:" + port + "/";
-    }
-
-    protected CloseableClientResponse get() {
-        WebResource wr = client.resource(getBaseURL() + DISTRIBUTION_PATH);
-        WebResource.Builder builder = wr.getRequestBuilder();
-        return CloseableClientResponse.of(builder.get(ClientResponse.class));
     }
 }
