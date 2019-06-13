@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.nuxeo.ecm.webengine.app.WebEngineModule;
+import org.nuxeo.ecm.webengine.jaxrs.coreiodelegate.JsonCoreIODelegate;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
@@ -41,7 +42,7 @@ public class ManagementModule extends WebEngineModule {
     @Override
     public Set<Object> getSingletons() {
         Set<Object> result = new HashSet<>();
-        result.add(new JacksonJsonProvider());
+        result.add(new JsonCoreIODelegate());
         return result;
     }
 }
