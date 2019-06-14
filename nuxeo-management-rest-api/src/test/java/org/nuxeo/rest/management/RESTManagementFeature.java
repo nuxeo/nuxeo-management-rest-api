@@ -31,5 +31,5 @@ import org.nuxeo.runtime.test.runner.RunnerFeature;
 @Deploy("org.nuxeo.ecm.platform.web.common")
 @Deploy("org.nuxeo.rest.management")
 @Deploy("org.nuxeo.rest.management:OSGI-INF/test-webengine-servletcontainer-contrib.xml")
-public class ManagementFeature implements RunnerFeature {
+public class RestManagementFeature implements RunnerFeature {
 }
