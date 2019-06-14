@@ -5,4 +5,4 @@ Bundle-SymbolicName: org.nuxeo.rest.management;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Vendor: Nuxeo
 Nuxeo-WebModule: org.nuxeo.rest.management.ManagementModule;name=management;host=management
-Nuxeo-Component: OSGI-INF/SimplifiedServerInfoWriter-contrib.xml
+Nuxeo-Component: OSGI-INF/rest-management-marshallers-contrib.xml

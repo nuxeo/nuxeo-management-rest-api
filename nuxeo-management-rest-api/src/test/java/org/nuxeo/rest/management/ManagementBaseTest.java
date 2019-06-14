@@ -37,7 +37,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @since 11.1
  */
 @RunWith(FeaturesRunner.class)
-@Features(ManagementFeature.class)
+@Features(RestManagementFeature.class)
 public abstract class ManagementBaseTest {
 
     protected static final String ADMINISTRATOR = "Administrator";
