@@ -41,7 +41,6 @@ public class ProbeStatusWriter extends AbstractJsonWriter<ProbeStatus> {
 
     @Override
     public void write(ProbeStatus entity, JsonGenerator jg) throws IOException {
-        jg.useDefaultPrettyPrinter();
         jg.writeStartObject();
 
         jg.writeBooleanField("neverExecuted", entity.isNeverExecuted());
