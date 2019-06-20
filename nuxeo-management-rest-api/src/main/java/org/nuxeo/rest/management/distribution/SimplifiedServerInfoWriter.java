@@ -45,7 +45,6 @@ public class SimplifiedServerInfoWriter extends AbstractJsonWriter<SimplifiedSer
 
     @Override
     public void write(SimplifiedServerInfo entity, JsonGenerator jg) throws IOException {
-        jg.useDefaultPrettyPrinter();
         jg.writeStartObject();
         jg.writeStringField(Environment.PRODUCT_NAME, entity.getApplicationName());
         jg.writeStringField(Environment.PRODUCT_VERSION, entity.getApplicationVersion());
