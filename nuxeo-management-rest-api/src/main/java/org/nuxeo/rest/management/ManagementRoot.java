@@ -19,11 +19,11 @@
 
 package org.nuxeo.rest.management;
 
-import org.nuxeo.ecm.webengine.model.WebObject;
-import org.nuxeo.ecm.webengine.model.impl.ModuleRoot;
-
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+
+import org.nuxeo.ecm.webengine.model.WebObject;
+import org.nuxeo.ecm.webengine.model.impl.ModuleRoot;
 
 /**
  * @since 11.1
