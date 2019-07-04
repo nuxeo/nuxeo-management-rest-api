@@ -25,6 +25,7 @@ import java.util.Set;
 import org.nuxeo.ecm.webengine.app.WebEngineExceptionMapper;
 import org.nuxeo.ecm.webengine.app.WebEngineModule;
 import org.nuxeo.ecm.webengine.jaxrs.coreiodelegate.JsonCoreIODelegate;
+import org.nuxeo.ecm.webengine.model.io.BlobWriter;
 
 /**
  * @since 11.1
@@ -43,6 +44,7 @@ public class ManagementModule extends WebEngineModule {
         Set<Object> result = new HashSet<>();
         result.add(new JsonCoreIODelegate());
         result.add(new WebEngineExceptionMapper());
+        result.add(new BlobWriter());
         return result;
     }
 }
