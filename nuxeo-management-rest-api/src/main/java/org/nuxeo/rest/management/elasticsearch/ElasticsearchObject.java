@@ -35,6 +35,7 @@ import org.nuxeo.ecm.core.bulk.message.BulkStatus;
 import org.nuxeo.ecm.core.query.sql.NXQL;
 import org.nuxeo.ecm.webengine.model.WebObject;
 import org.nuxeo.ecm.webengine.model.impl.DefaultObject;
+import org.nuxeo.elasticsearch.api.ElasticSearchAdmin;
 import org.nuxeo.runtime.api.Framework;
 
 /**
@@ -78,6 +79,32 @@ public class ElasticsearchObject extends DefaultObject {
                 NXQL.ECM_ANCESTORID, documentId);
 
         return performIndexing(repositoryName, query);
+    }
+
+    /**
+     * Executes an ES flush on document index of a given repository.
+     *
+     * @param repositoryName the repository on which we want to flush the index, it cannot be {@code null} or
+     *            {@code empty}
+     */
+    @POST
+    @Path("{repositoryName}/flush")
+    public void doFlush(@PathParam("repositoryName") String repositoryName) {
+        Framework.doPrivileged(
+                () -> Framework.getService(ElasticSearchAdmin.class).flushRepositoryIndex(repositoryName));
+    }
+
+    /**
+     * Executes an ES optimize on document index of a given repository.
+     *
+     * @param repositoryName the repository on which we want to optimize the index, it cannot be {@code null} or
+     *            {@code empty}
+     */
+    @POST
+    @Path("{repositoryName}/optimize")
+    public void doOptimize(@PathParam("repositoryName") String repositoryName) {
+        Framework.doPrivileged(
+                () -> Framework.getService(ElasticSearchAdmin.class).optimizeRepositoryIndex(repositoryName));
     }
 
     /**
