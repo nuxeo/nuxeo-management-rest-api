@@ -20,6 +20,7 @@
       <filterset>
         <filter token="VERSION" value="${maven.project.version}" />
         <filter token="DISTRIB_VERSION" value="${nuxeo.distribution.version}" />
+        <filter token="TARGET_VERSION" value="${nuxeo.target.version}" />
       </filterset>
     </copy>
     <copy file="${outdir}/artifacts-management-rest-api.properties" todir="${outdir}/marketplace/install" />

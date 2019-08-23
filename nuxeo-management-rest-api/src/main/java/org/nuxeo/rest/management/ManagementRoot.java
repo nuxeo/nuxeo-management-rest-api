@@ -19,9 +19,13 @@
 
 package org.nuxeo.rest.management;
 
+import static java.lang.Boolean.TRUE;
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
+import org.nuxeo.ecm.core.api.NuxeoException;
 import org.nuxeo.ecm.webengine.model.WebObject;
 import org.nuxeo.ecm.webengine.model.impl.ModuleRoot;
 
@@ -34,6 +38,9 @@ public class ManagementRoot extends ModuleRoot {
 
     @Path("{path}")
     public Object route(@PathParam("path") String path) {
-        return newObject(path);
+        if (TRUE.equals(ManagementFilter.API_ENABLED.get())) {
+            return newObject(path);
+        }
+        throw new NuxeoException("Requested path doesn't exist", SC_NOT_FOUND);
     }
 }
