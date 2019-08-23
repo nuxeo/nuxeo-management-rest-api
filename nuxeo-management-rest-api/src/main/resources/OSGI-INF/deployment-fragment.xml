@@ -20,4 +20,21 @@
 
   </extension>
 
+  <extension target="web#STD-AUTH-FILTER">
+
+    <filter>
+      <display-name>Management REST API Filter</display-name>
+      <filter-name>ManagementFilter</filter-name>
+      <filter-class>org.nuxeo.rest.management.ManagementFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+      <filter-name>ManagementFilter</filter-name>
+      <url-pattern>/site/management/*</url-pattern>
+      <dispatcher>REQUEST</dispatcher>
+      <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+
+  </extension>
+
 </fragment>

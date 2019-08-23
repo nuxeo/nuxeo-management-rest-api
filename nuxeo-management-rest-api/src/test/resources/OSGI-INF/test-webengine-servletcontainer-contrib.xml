@@ -16,4 +16,17 @@
 
   </extension>
 
+  <extension target="org.nuxeo.runtime.server" point="filter">
+    <filter context="/">
+      <filter-name>ManagementFilter</filter-name>
+      <filter-class>org.nuxeo.rest.management.ManagementFilter</filter-class>
+      <display-name>Management REST API Filter</display-name>
+      <filter-mapping>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+      </filter-mapping>
+    </filter>
+  </extension>
+
 </component>

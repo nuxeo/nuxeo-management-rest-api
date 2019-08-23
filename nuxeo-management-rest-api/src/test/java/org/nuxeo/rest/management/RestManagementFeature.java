@@ -19,10 +19,15 @@
 
 package org.nuxeo.rest.management;
 
+import static org.nuxeo.launcher.config.ConfigurationGenerator.PARAM_HTTP_PORT;
+
 import org.nuxeo.ecm.webengine.test.WebEngineFeature;
+import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
+import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.nuxeo.runtime.test.runner.RunnerFeature;
+import org.nuxeo.runtime.test.runner.ServletContainerFeature;
 
 /**
  * @since 11.1
@@ -32,4 +37,11 @@ import org.nuxeo.runtime.test.runner.RunnerFeature;
 @Deploy("org.nuxeo.rest.management")
 @Deploy("org.nuxeo.rest.management:OSGI-INF/test-webengine-servletcontainer-contrib.xml")
 public class RestManagementFeature implements RunnerFeature {
+
+    @Override
+    public void start(FeaturesRunner runner) {
+        // TODO this should be set by ServletContainerFeature itself
+        int port = runner.getFeature(ServletContainerFeature.class).getPort();
+        Framework.getProperties().put(PARAM_HTTP_PORT, String.valueOf(port));
+    }
 }
