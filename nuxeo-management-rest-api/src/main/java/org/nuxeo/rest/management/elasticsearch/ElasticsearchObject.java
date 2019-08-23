@@ -65,8 +65,8 @@ public class ElasticsearchObject extends DefaultObject {
     /**
      * Performs an ES indexing on the given document and his children.
      *
-     * @param repositoryName the repository name that contains the document which will be indexed, cannot be {@code null}
-     *            or {@code empty}
+     * @param repositoryName the repository name that contains the document which will be indexed, cannot be
+     *            {@code null} or {@code empty}
      * @param documentId the id of the document that will be indexed and his children recursively
      * @see #performIndexing(String, String)
      */

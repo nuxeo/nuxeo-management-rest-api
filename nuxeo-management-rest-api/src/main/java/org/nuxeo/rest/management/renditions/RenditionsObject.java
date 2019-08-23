@@ -19,27 +19,27 @@
 
 package org.nuxeo.rest.management.renditions;
 
-        import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
-        import static org.nuxeo.ecm.core.api.security.SecurityConstants.SYSTEM_USERNAME;
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import static org.nuxeo.ecm.core.api.security.SecurityConstants.SYSTEM_USERNAME;
 
-        import javax.ws.rs.FormParam;
-        import javax.ws.rs.GET;
-        import javax.ws.rs.POST;
-        import javax.ws.rs.Path;
-        import javax.ws.rs.PathParam;
-        import javax.ws.rs.Produces;
-        import javax.ws.rs.core.MediaType;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
-        import org.apache.commons.lang3.StringUtils;
-        import org.nuxeo.ecm.core.api.NuxeoException;
-        import org.nuxeo.ecm.core.bulk.BulkService;
-        import org.nuxeo.ecm.core.bulk.message.BulkCommand;
-        import org.nuxeo.ecm.core.bulk.message.BulkStatus;
-        import org.nuxeo.ecm.platform.picture.recompute.RecomputeViewsAction;
-        import org.nuxeo.ecm.platform.thumbnail.action.RecomputeThumbnailsAction;
-        import org.nuxeo.ecm.webengine.model.WebObject;
-        import org.nuxeo.ecm.webengine.model.impl.DefaultObject;
-        import org.nuxeo.runtime.api.Framework;
+import org.apache.commons.lang3.StringUtils;
+import org.nuxeo.ecm.core.api.NuxeoException;
+import org.nuxeo.ecm.core.bulk.BulkService;
+import org.nuxeo.ecm.core.bulk.message.BulkCommand;
+import org.nuxeo.ecm.core.bulk.message.BulkStatus;
+import org.nuxeo.ecm.platform.picture.recompute.RecomputeViewsAction;
+import org.nuxeo.ecm.platform.thumbnail.action.RecomputeThumbnailsAction;
+import org.nuxeo.ecm.webengine.model.WebObject;
+import org.nuxeo.ecm.webengine.model.impl.DefaultObject;
+import org.nuxeo.runtime.api.Framework;
 
 /**
  * @since 11.1
@@ -101,7 +101,7 @@ public class RenditionsObject extends DefaultObject {
         BulkService bulkService = Framework.getService(BulkService.class);
         String commandId = bulkService.submit(
                 new BulkCommand.Builder(RecomputeThumbnailsAction.ACTION_NAME, finalQuery).user(SYSTEM_USERNAME)
-                        .build());
+                                                                                          .build());
         return bulkService.getStatus(commandId);
     }
 
