@@ -15,6 +15,9 @@
   <platform>server-@TARGET_VERSION@</platform>
   <platform>server-@TARGET_VERSION@-*</platform>
 </platforms>
+<dependencies>
+  <package>nuxeo-10.10-HF11</package>
+</dependencies>
 <license>LGPL</license>
 <license-url>http://www.gnu.org/licenses/lgpl.html</license-url>
 <visibility>PUBLIC</visibility>
