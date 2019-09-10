@@ -90,7 +90,7 @@ public class TestJWTAuthentication {
                                                                      .build();
         unauthorizedHttpClientRule.starting();
 
-        Framework.getProperties().put(ManagementRoot.MANAGEMENT_API_USER_PROPERTY, "transient/foo");
+        Framework.getProperties().put(ManagementFilter.MANAGEMENT_API_USER_PROPERTY, "transient/foo");
     }
 
     @After
@@ -98,7 +98,7 @@ public class TestJWTAuthentication {
         authorizedHttpClientRule.finished();
         unauthorizedHttpClientRule.finished();
 
-        Framework.getProperties().remove(ManagementRoot.MANAGEMENT_API_USER_PROPERTY);
+        Framework.getProperties().remove(ManagementFilter.MANAGEMENT_API_USER_PROPERTY);
     }
 
     @Test
