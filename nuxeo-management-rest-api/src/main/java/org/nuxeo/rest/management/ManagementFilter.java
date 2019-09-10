@@ -18,40 +18,60 @@
  */
 package org.nuxeo.rest.management;
 
-import static java.lang.Boolean.TRUE;
+import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static org.nuxeo.launcher.config.ConfigurationGenerator.PARAM_HTTP_PORT;
 
 import java.io.IOException;
 
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.nuxeo.ecm.core.api.NuxeoPrincipal;
 import org.nuxeo.runtime.api.Framework;
 
 /**
  * @since 11.1
  */
-public class ManagementFilter implements Filter {
+public class ManagementFilter extends HttpFilter {
 
-    protected static final ThreadLocal<Boolean> API_ENABLED = new ThreadLocal<>();
+    private static final long serialVersionUID = 1L;
 
     protected static final String HTTP_PORT_PROPERTY = "nuxeo.server.http.managementPort";
 
+    public static final String MANAGEMENT_API_USER_PROPERTY = "org.nuxeo.rest.management.user";
+
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+    protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
             throws IOException, ServletException {
+        if (!requestIsOnConfiguredPort(req)) {
+            res.sendError(SC_NOT_FOUND, "Not Found");
+        } else if (!isUserValid(req)) {
+            res.sendError(SC_FORBIDDEN, "Forbidden");
+        } else {
+            chain.doFilter(req, res);
+        }
+    }
+
+    protected boolean requestIsOnConfiguredPort(ServletRequest request) {
         int port = request.getServerPort();
         String configPort = Framework.getProperty(HTTP_PORT_PROPERTY, Framework.getProperty(PARAM_HTTP_PORT));
-        try {
-            if (Integer.parseInt(configPort) == port) {
-                API_ENABLED.set(TRUE);
-            }
-            chain.doFilter(request, response);
-        } finally {
-            API_ENABLED.remove();
+
+        return Integer.parseInt(configPort) == port;
+    }
+
+    protected boolean isUserValid(HttpServletRequest request) {
+        if (request.getUserPrincipal() instanceof NuxeoPrincipal) {
+            NuxeoPrincipal principal = (NuxeoPrincipal) request.getUserPrincipal();
+            String managementUser = Framework.getProperty(MANAGEMENT_API_USER_PROPERTY);
+
+            return principal.getName().equals(managementUser) || principal.isAdministrator();
+        } else {
+            return false;
         }
     }
 }
