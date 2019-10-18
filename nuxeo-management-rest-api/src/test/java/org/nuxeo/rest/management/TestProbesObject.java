@@ -20,11 +20,10 @@
 
 package org.nuxeo.rest.management;
 
+import static javax.servlet.http.HttpServletResponse.SC_OK;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Test;
 import org.nuxeo.ecm.core.io.marshallers.json.JsonAssert;
@@ -39,28 +38,28 @@ import com.fasterxml.jackson.databind.JsonNode;
 @Deploy("org.nuxeo.ecm.core.management")
 public class TestProbesObject extends ManagementBaseTest {
 
-    private static final String FAILURE_COUNT = "failure";
+    public static final String FAILURE_COUNT = "failure";
 
-    private static final String SUCCESS_COUNT = "success";
+    public static final String SUCCESS_COUNT = "success";
 
-    protected static final String RUN_COUNT = "run";
+    public static final String RUN_COUNT = "run";
 
-    protected static final String COUNTS = "counts";
+    public static final String COUNTS = "counts";
 
-    protected static final String ADMINISTRATIVE_STATUS = "administrativeStatus";
+    public static final String ADMINISTRATIVE_STATUS = "administrativeStatus";
 
-    protected static final String STATUS_INFOS = "infos";
+    public static final String STATUS_INFOS = "infos";
 
-    protected static final String STATUS_SUCCESS = SUCCESS_COUNT;
+    public static final String STATUS_SUCCESS = SUCCESS_COUNT;
 
-    protected static final String NAME = "name";
+    public static final String NAME = "name";
 
-    public static final String PATH = "site/management/probes";
+    public static final String PATH = "site/management/probes/";
 
     @Test
     public void testAllProbes() throws IOException {
         try (CloseableClientResponse response = httpClientRule.get(PATH)) {
-            assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+            assertEquals(SC_OK, response.getStatus());
             JsonNode node = mapper.readTree(response.getEntityInputStream());
             JsonAssert jAssert = JsonAssert.on(node.toString());
             jAssert.get("entity-type").isEquals("probes");
@@ -73,8 +72,8 @@ public class TestProbesObject extends ManagementBaseTest {
 
     @Test
     public void testProbe() throws IOException {
-        try (CloseableClientResponse response = httpClientRule.get(PATH + "/" + ADMINISTRATIVE_STATUS)) {
-            assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+        try (CloseableClientResponse response = httpClientRule.get(PATH + ADMINISTRATIVE_STATUS)) {
+            assertEquals(SC_OK, response.getStatus());
             JsonNode node = mapper.readTree(response.getEntityInputStream());
             JsonAssert jAssert = JsonAssert.on(node.toString());
             testProbeInfo(jAssert);
@@ -83,18 +82,17 @@ public class TestProbesObject extends ManagementBaseTest {
 
     @Test
     public void testLaunchProbe() throws IOException {
-        int runCount;
-        try (CloseableClientResponse response = httpClientRule.get(PATH + "/" + ADMINISTRATIVE_STATUS)) {
-            assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+        try (CloseableClientResponse response = httpClientRule.get(PATH + ADMINISTRATIVE_STATUS)) {
+            assertEquals(SC_OK, response.getStatus());
             JsonNode node = mapper.readTree(response.getEntityInputStream());
-            runCount = node.get(COUNTS).get(RUN_COUNT).asInt();
+            assertEquals(0, node.get(COUNTS).get(RUN_COUNT).asInt());
         }
-        try (CloseableClientResponse response = httpClientRule.post(PATH + "/" + ADMINISTRATIVE_STATUS, null)) {
-            assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+        try (CloseableClientResponse response = httpClientRule.post(PATH + ADMINISTRATIVE_STATUS, null)) {
+            assertEquals(SC_OK, response.getStatus());
             JsonNode node = mapper.readTree(response.getEntityInputStream());
             JsonAssert jAssert = JsonAssert.on(node.toString());
             testProbeInfo(jAssert);
-            assertEquals(runCount + 1L, node.get(COUNTS).get(RUN_COUNT).asInt());
+            assertEquals(1, node.get(COUNTS).get(RUN_COUNT).asInt());
         }
     }
 
