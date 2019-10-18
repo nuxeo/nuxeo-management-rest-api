@@ -39,6 +39,7 @@ import org.nuxeo.runtime.api.Framework;
  * @since 11.1
  */
 @WebObject(type = "probes")
+@Produces(MediaType.APPLICATION_JSON)
 public class ProbesObject extends DefaultObject {
 
     /**
@@ -48,7 +49,6 @@ public class ProbesObject extends DefaultObject {
      * @return a {@link ProbeInfo}
      */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("{probeName}")
     public ProbeInfo doGet(@PathParam("probeName") String probeName) {
         return Framework.getService(ProbeManager.class).getProbeInfo(probeName);
@@ -60,7 +60,6 @@ public class ProbesObject extends DefaultObject {
      * @return a list of all {@link ProbeInfo}
      */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     public List<ProbeInfo> doGet() {
         return new ArrayList<>(Framework.getService(ProbeManager.class).getAllProbeInfos());
     }
@@ -72,7 +71,6 @@ public class ProbesObject extends DefaultObject {
      * @return the result of the probe in a {@link ProbeInfo}
      */
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("{probeName}")
     public ProbeInfo launch(@PathParam("probeName") String probeName) {
         return Framework.getService(ProbeManager.class).runProbe(probeName);
