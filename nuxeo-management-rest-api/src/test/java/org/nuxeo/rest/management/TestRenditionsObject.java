@@ -19,7 +19,6 @@
 
 package org.nuxeo.rest.management;
 
-import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -50,7 +49,6 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.thumbnail.ThumbnailService;
-import org.nuxeo.jaxrs.test.CloseableClientResponse;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 
@@ -93,13 +91,6 @@ public class TestRenditionsObject extends ManagementBAFTest {
 
     @Inject
     protected ThumbnailService thumbnailService;
-
-    @Test
-    public void testGetWrongCommandId() {
-        try (CloseableClientResponse response = httpClientRule.get(PATH + "/pictures/" + "fakeCommandId")) {
-            assertEquals(SC_NOT_FOUND, response.getStatus());
-        }
-    }
 
     @Test
     public void testRenditionsPostPicturesRecompute() throws IOException {

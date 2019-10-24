@@ -57,8 +57,7 @@ public class RenditionsObject extends DefaultObject {
      * provided.
      *
      * @param query a custom query to specify which pictures should be processed
-     * @return the {@link BulkStatus} of the command. It contains the commandId To be used in
-     *         {@link #doGetPicturesRecomputeStatus(String)} to get an updated {@link BulkStatus}
+     * @return the {@link BulkStatus} of the command
      */
     @POST
     @Path("pictures/recompute")
@@ -89,8 +88,7 @@ public class RenditionsObject extends DefaultObject {
      * provided.
      *
      * @param query a custom query to specify which thumbnails should be processesd
-     * @return the {@link BulkStatus} of the command. It contains the commandId To be used in
-     *         {@link #doGetThumbnailsRecomputeStatus(String)} to get an updated {@link BulkStatus}
+     * @return the {@link BulkStatus} of the command
      */
     @POST
     @Path("thumbnails/recompute")
