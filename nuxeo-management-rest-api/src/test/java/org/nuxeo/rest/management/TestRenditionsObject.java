@@ -84,15 +84,21 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 @Deploy("org.nuxeo.ecm.platform.thumbnail")
 public class TestRenditionsObject extends ManagementBaseTest {
 
-    private static final String ASYNC_KEY = "async";
+    public static final String STATE = "state";
 
-    private static final String QUERY_KEY = "query";
+    public static final String ASYNC_KEY = "async";
 
-    private static final String INVALID_QUERY = "Invalid query";
+    public static final String QUERY_KEY = "query";
+
+    public static final String INVALID_QUERY = "Invalid query";
 
     public static final String WRONG_QUERY = "SELECT * FROM nowhere";
 
     public static final String PATH = "site/management/renditions";
+
+    public static final String PICTURES_RECOMPUTE_PATH = PATH + "/pictures/recompute";
+
+    public static final String THUMBNAILS_RECOMPUTE_PATH = PATH + "/thumbnails/recompute";
 
     @Inject
     protected CoreSession session;
@@ -111,7 +117,7 @@ public class TestRenditionsObject extends ManagementBaseTest {
     }
 
     @Test
-    public void testRendtionsPostPicturesRecompute() throws IOException {
+    public void testRenditionsPostPicturesRecompute() throws IOException {
         // test the picture views are computed correctly
         DocumentRef docRef = beforePictureViewsRecompute();
 
@@ -119,7 +125,7 @@ public class TestRenditionsObject extends ManagementBaseTest {
         docRef = emptyPictureViews(docRef);
 
         // generating new picture views
-        JsonNode result = runBulkAction("/pictures/recompute", null);
+        JsonNode result = runBulkAction(PICTURES_RECOMPUTE_PATH, null);
 
         // checking the picture views are recomputed in the session and the bulk status
         afterPicturesRecompute(docRef, false);
@@ -130,7 +136,7 @@ public class TestRenditionsObject extends ManagementBaseTest {
     }
 
     @Test
-    public void testRendtionsPostPicturesRecomputeCustomQuery() throws IOException {
+    public void testRenditionsPostPicturesRecomputeCustomQuery() throws IOException {
         // test the picture views are computed correctly
         DocumentRef docRef = beforePictureViewsRecompute();
 
@@ -140,7 +146,7 @@ public class TestRenditionsObject extends ManagementBaseTest {
         formData.add(ASYNC_KEY, "true");
 
         // generating new picture views
-        JsonNode result = runBulkAction("/pictures/recompute", formData);
+        JsonNode result = runBulkAction(PICTURES_RECOMPUTE_PATH, formData);
 
         // checking the picture views are recomputed in the session and the bulk status
         afterPicturesRecompute(docRef, false);
@@ -151,7 +157,7 @@ public class TestRenditionsObject extends ManagementBaseTest {
     }
 
     @Test
-    public void testRendtionsPostPicturesRecomputeWrongQuery() throws IOException {
+    public void testRenditionsPostPicturesRecomputeWrongQuery() throws IOException {
         // test the picture views are computed correctly and emptying them to check if the bulk action will recompute
         // them correctly
         DocumentRef docRef = beforePictureViewsRecompute();
@@ -161,7 +167,7 @@ public class TestRenditionsObject extends ManagementBaseTest {
         MultivaluedMap<String, String> formData = new MultivaluedMapImpl();
         formData.add(QUERY_KEY, WRONG_QUERY);
         formData.add(ASYNC_KEY, "true");
-        JsonNode result = runBulkAction("/pictures/recompute", formData);
+        JsonNode result = runBulkAction(PICTURES_RECOMPUTE_PATH, formData);
 
         // checking the picture views are not recomputed because the query failed
         afterPicturesRecompute(docRef, true);
@@ -173,7 +179,7 @@ public class TestRenditionsObject extends ManagementBaseTest {
     }
 
     @Test
-    public void testRendtionsPostThumbnailsRecomputeBulkStatus() throws IOException {
+    public void testRenditionsPostThumbnailsRecomputeBulkStatus() throws IOException {
         // test the thumbnails are computed correctly
         DocumentRef docRef = beforeThumbnailsRecompute();
 
@@ -181,7 +187,7 @@ public class TestRenditionsObject extends ManagementBaseTest {
         docRef = emptyThumbnail(docRef);
 
         // generating new thumbnails
-        JsonNode result = runBulkAction("/thumbnails/recompute", null);
+        JsonNode result = runBulkAction(THUMBNAILS_RECOMPUTE_PATH, null);
 
         // checking the thumbnails are recomputed in the session and the bulk status
         afterThumbnailsRecompute(docRef, false);
@@ -192,7 +198,7 @@ public class TestRenditionsObject extends ManagementBaseTest {
     }
 
     @Test
-    public void testRendtionsPostThumbnailsRecomputeBulkStatusCustomQuery() throws IOException {
+    public void testRenditionsPostThumbnailsRecomputeBulkStatusCustomQuery() throws IOException {
         // test the thumbnails are computed correctly and emptying them to check if the bulk action will recompute them
         // correctly
         DocumentRef docRef = beforeThumbnailsRecompute();
@@ -201,7 +207,7 @@ public class TestRenditionsObject extends ManagementBaseTest {
         MultivaluedMap<String, String> formData = new MultivaluedMapImpl();
         formData.add(QUERY_KEY, "SELECT * FROM Document WHERE ecm:mixinType = 'Thumbnail'");
         formData.add(ASYNC_KEY, "true");
-        JsonNode result = runBulkAction("/thumbnails/recompute", formData);
+        JsonNode result = runBulkAction(THUMBNAILS_RECOMPUTE_PATH, formData);
 
         // checking the thumbnails are recomputed in the session and in the bulk status
         afterThumbnailsRecompute(docRef, false);
@@ -213,7 +219,7 @@ public class TestRenditionsObject extends ManagementBaseTest {
 
     @Test
     @Deploy("org.nuxeo.ecm.platform.thumbnail")
-    public void testRendtionsPostThumbnailsRecomputeBulkStatusWrongQuery() throws IOException {
+    public void testRenditionsPostThumbnailsRecomputeBulkStatusWrongQuery() throws IOException {
         // test the thumbnails are computed correctly and emptying them to check if the bulk action will recompute them
         // correctly
         DocumentRef docRef = beforeThumbnailsRecompute();
@@ -223,7 +229,7 @@ public class TestRenditionsObject extends ManagementBaseTest {
         MultivaluedMap<String, String> formData = new MultivaluedMapImpl();
         formData.add(QUERY_KEY, WRONG_QUERY);
         formData.add(ASYNC_KEY, "true");
-        JsonNode result = runBulkAction("/thumbnails/recompute", formData);
+        JsonNode result = runBulkAction(THUMBNAILS_RECOMPUTE_PATH, formData);
 
         // checking the thumbnails are not recomputed in the session because the query failed
         afterThumbnailsRecompute(docRef, true);
@@ -238,7 +244,7 @@ public class TestRenditionsObject extends ManagementBaseTest {
         assertEquals(SC_OK, response.getStatus());
         JsonNode result = mapper.readTree(response.getEntityInputStream());
         assertEquals(STATUS_ENTITY_TYPE, result.get(ENTITY_FIELD_NAME).asText());
-        assertTrue(result.has("state"));
+        assertTrue(result.has(STATE));
         assertTrue(result.has("processed"));
         assertTrue(result.has("error"));
         assertTrue(result.has("errorCount"));
@@ -260,7 +266,7 @@ public class TestRenditionsObject extends ManagementBaseTest {
         String commandId;
         try (CloseableClientResponse response = httpClientRule.post(postPath, formData)) {
             JsonNode result = validateBulkStatus(response);
-            assertEquals(State.SCHEDULED.name(), result.get("state").asText());
+            assertEquals(State.SCHEDULED.name(), result.get(STATE).asText());
             commandId = result.get(STATUS_COMMAND_ID).asText();
 
         }
@@ -270,7 +276,7 @@ public class TestRenditionsObject extends ManagementBaseTest {
         // checking the bulk action is completed
         try (CloseableClientResponse response = httpClientRule.get(postPath + "/" + commandId)) {
             JsonNode result = validateBulkStatus(response);
-            assertEquals(State.COMPLETED.name(), result.get("state").asText());
+            assertEquals(State.COMPLETED.name(), result.get(STATE).asText());
             try {
                 Instant.parse(result.get("completed").asText());
             } catch (DateTimeParseException e) {

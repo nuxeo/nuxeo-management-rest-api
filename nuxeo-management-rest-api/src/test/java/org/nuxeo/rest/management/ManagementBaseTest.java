@@ -40,7 +40,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Features(RestManagementFeature.class)
 public abstract class ManagementBaseTest {
 
-    protected static final String ADMINISTRATOR = "Administrator";
+    public static final String ADMINISTRATOR = "Administrator";
 
     @Inject
     protected ServletContainerFeature servletContainerFeature;
