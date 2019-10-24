@@ -19,6 +19,8 @@
 
 package org.nuxeo.rest.management.probes;
 
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.nuxeo.ecm.core.api.NuxeoException;
 import org.nuxeo.ecm.core.management.api.ProbeInfo;
 import org.nuxeo.ecm.core.management.api.ProbeManager;
 import org.nuxeo.ecm.webengine.model.WebObject;
@@ -51,7 +54,8 @@ public class ProbesObject extends DefaultObject {
     @GET
     @Path("{probeName}")
     public ProbeInfo doGet(@PathParam("probeName") String probeName) {
-        return Framework.getService(ProbeManager.class).getProbeInfo(probeName);
+        ProbeInfo probeInfo = Framework.getService(ProbeManager.class).getProbeInfo(probeName);
+        return checkProbe(probeName, probeInfo);
     }
 
     /**
@@ -73,7 +77,15 @@ public class ProbesObject extends DefaultObject {
     @POST
     @Path("{probeName}")
     public ProbeInfo launch(@PathParam("probeName") String probeName) {
-        return Framework.getService(ProbeManager.class).runProbe(probeName);
+        ProbeInfo probeInfo = Framework.getService(ProbeManager.class).runProbe(probeName);
+        return checkProbe(probeName, probeInfo);
+    }
+
+    protected ProbeInfo checkProbe(String probeName, ProbeInfo probeInfo) {
+        if (probeInfo == null) {
+            throw new NuxeoException("No such probe: " + probeName, SC_NOT_FOUND);
+        }
+        return probeInfo;
     }
 
 }
