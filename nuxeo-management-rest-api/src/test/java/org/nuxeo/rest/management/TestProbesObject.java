@@ -20,6 +20,7 @@
 
 package org.nuxeo.rest.management;
 
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
 import static org.junit.Assert.assertEquals;
 
@@ -93,6 +94,20 @@ public class TestProbesObject extends ManagementBaseTest {
             JsonAssert jAssert = JsonAssert.on(node.toString());
             testProbeInfo(jAssert);
             assertEquals(1, node.get(COUNTS).get(RUN_COUNT).asInt());
+        }
+    }
+
+    @Test
+    public void testGetWrongProbe() {
+        try (CloseableClientResponse response = httpClientRule.get(PATH + "fake")) {
+            assertEquals(SC_NOT_FOUND, response.getStatus());
+        }
+    }
+
+    @Test
+    public void testLaunchWrongProbe() {
+        try (CloseableClientResponse response = httpClientRule.post(PATH + "fake", null)) {
+            assertEquals(SC_NOT_FOUND, response.getStatus());
         }
     }
 
