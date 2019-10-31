@@ -19,19 +19,15 @@
 
 package org.nuxeo.rest.management.renditions;
 
-import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static org.nuxeo.ecm.core.api.security.SecurityConstants.SYSTEM_USERNAME;
 
 import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang3.StringUtils;
-import org.nuxeo.ecm.core.api.NuxeoException;
 import org.nuxeo.ecm.core.bulk.BulkService;
 import org.nuxeo.ecm.core.bulk.message.BulkCommand;
 import org.nuxeo.ecm.core.bulk.message.BulkStatus;
@@ -71,19 +67,6 @@ public class RenditionsObject extends DefaultObject {
     }
 
     /**
-     * Retrieves the BulkStatus for the given picture recomputation command id.
-     *
-     * @param commandId the command id of the BulkStatus to retrieve, which may or may not be
-     *            {@link RecomputeViewsAction}
-     * @return the BulkStatus concerned by the commandId
-     */
-    @GET
-    @Path("pictures/recompute/{commandId}")
-    public BulkStatus doGetPicturesRecomputeStatus(@PathParam("commandId") String commandId) {
-        return getStatus(commandId);
-    }
-
-    /**
      * Recomputes the thumbnail for the documents matching the given query or {@link #THUMBNAILS_DEFAULT_QUERY} if not
      * provided.
      *
@@ -99,32 +82,6 @@ public class RenditionsObject extends DefaultObject {
                 new BulkCommand.Builder(RecomputeThumbnailsAction.ACTION_NAME, finalQuery).user(SYSTEM_USERNAME)
                                                                                           .build());
         return bulkService.getStatus(commandId);
-    }
-
-    /**
-     * Retrieves the BulkStatus for the given thumbnail recomputation command id.
-     *
-     * @param commandId the commandId of the BulkStatus to retrieve. Which may or may not be
-     *            {@link RecomputeThumbnailsAction}
-     * @return the BulkStatus concerned by the commandId
-     */
-    @GET
-    @Path("thumbnails/recompute/{commandId}")
-    public BulkStatus doGetThumbnailsRecomputeStatus(@PathParam("commandId") String commandId) {
-        return getStatus(commandId);
-    }
-
-    /**
-     * A generic {@link BulkStatus} getter called under the hood by any facade getter.
-     *
-     * @param commandId the id of the desired command
-     * @return the {@link BulkStatus} associated with the commandId.
-     */
-    protected BulkStatus getStatus(String commandId) {
-        if (commandId == null) {
-            throw new NuxeoException("The commandId is required", SC_NOT_FOUND);
-        }
-        return Framework.getService(BulkService.class).getStatus(commandId);
     }
 
 }
