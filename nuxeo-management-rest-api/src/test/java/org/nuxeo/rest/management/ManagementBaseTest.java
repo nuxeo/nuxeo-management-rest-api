@@ -19,7 +19,7 @@
 
 package org.nuxeo.rest.management;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.MediaType.WILDCARD;
 
 import javax.inject.Inject;
 
@@ -52,7 +52,7 @@ public abstract class ManagementBaseTest {
     protected HttpClientTestRule getRule() {
         String url = String.format("http://localhost:%d/", servletContainerFeature.getPort());
         return new HttpClientTestRule.Builder().url(url)
-                                               .accept(APPLICATION_JSON)
+                                               .accept(WILDCARD)
                                                .credentials(ADMINISTRATOR, ADMINISTRATOR)
                                                .build();
     }

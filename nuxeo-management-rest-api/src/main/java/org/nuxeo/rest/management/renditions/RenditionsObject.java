@@ -19,13 +19,13 @@
 
 package org.nuxeo.rest.management.renditions;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.nuxeo.ecm.core.api.security.SecurityConstants.SYSTEM_USERNAME;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang3.StringUtils;
 import org.nuxeo.ecm.core.bulk.BulkService;
@@ -41,7 +41,7 @@ import org.nuxeo.runtime.api.Framework;
  * @since 11.1
  */
 @WebObject(type = "renditions")
-@Produces(MediaType.APPLICATION_JSON)
+@Produces(APPLICATION_JSON)
 public class RenditionsObject extends DefaultObject {
 
     public static final String THUMBNAILS_DEFAULT_QUERY = "SELECT * FROM Document WHERE ecm:mixinType = 'Thumbnail' AND thumb:thumbnail/data IS NULL AND ecm:isVersion = 0 AND ecm:isProxy = 0 AND ecm:isTrashed = 0";

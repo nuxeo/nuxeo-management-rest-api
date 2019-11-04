@@ -20,9 +20,10 @@
 
 package org.nuxeo.rest.management.distribution;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 import org.nuxeo.ecm.admin.runtime.RuntimeInstrospection;
 import org.nuxeo.ecm.admin.runtime.SimplifiedServerInfo;
@@ -33,10 +34,10 @@ import org.nuxeo.ecm.webengine.model.impl.DefaultObject;
  * @since 11.1
  */
 @WebObject(type = "distribution")
+@Produces(APPLICATION_JSON)
 public class DistributionObject extends DefaultObject {
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     public SimplifiedServerInfo doGet() {
         return RuntimeInstrospection.getInfo();
     }

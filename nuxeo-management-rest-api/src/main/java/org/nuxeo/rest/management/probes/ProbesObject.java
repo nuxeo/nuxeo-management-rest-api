@@ -20,6 +20,7 @@
 package org.nuxeo.rest.management.probes;
 
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 import org.nuxeo.ecm.core.api.NuxeoException;
 import org.nuxeo.ecm.core.management.api.ProbeInfo;
@@ -42,7 +42,7 @@ import org.nuxeo.runtime.api.Framework;
  * @since 11.1
  */
 @WebObject(type = "probes")
-@Produces(MediaType.APPLICATION_JSON)
+@Produces(APPLICATION_JSON)
 public class ProbesObject extends DefaultObject {
 
     /**
