@@ -22,6 +22,7 @@ package org.nuxeo.rest.management;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.nuxeo.ecm.webengine.app.JsonNuxeoExceptionWriter;
 import org.nuxeo.ecm.webengine.app.WebEngineExceptionMapper;
 import org.nuxeo.ecm.webengine.app.WebEngineModule;
 import org.nuxeo.ecm.webengine.jaxrs.coreiodelegate.JsonCoreIODelegate;
@@ -45,6 +46,7 @@ public class ManagementModule extends WebEngineModule {
         result.add(new JsonCoreIODelegate());
         result.add(new WebEngineExceptionMapper());
         result.add(new BlobWriter());
+        result.add(new JsonNuxeoExceptionWriter());
         return result;
     }
 }
