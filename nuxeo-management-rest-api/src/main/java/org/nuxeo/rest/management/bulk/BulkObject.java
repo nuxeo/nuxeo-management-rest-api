@@ -19,12 +19,12 @@
 package org.nuxeo.rest.management.bulk;
 
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 import org.nuxeo.ecm.core.api.NuxeoException;
 import org.nuxeo.ecm.core.bulk.BulkService;
@@ -38,13 +38,13 @@ import org.nuxeo.runtime.api.Framework;
  * @since 11.1
  */
 @WebObject(type = "bulk")
+@Produces(APPLICATION_JSON)
 public class BulkObject extends DefaultObject {
 
     /**
      * Gets the {@link BulkStatus} for the given {@code commandId}.
      */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("{commandId}")
     public BulkStatus doGetStatus(@PathParam("commandId") String commandId) {
         BulkStatus status = Framework.getService(BulkService.class).getStatus(commandId);

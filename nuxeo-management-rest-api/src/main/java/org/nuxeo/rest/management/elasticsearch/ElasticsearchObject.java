@@ -19,6 +19,7 @@
 
 package org.nuxeo.rest.management.elasticsearch;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.nuxeo.ecm.core.api.security.SecurityConstants.SYSTEM_USERNAME;
 import static org.nuxeo.elasticsearch.bulk.IndexAction.ACTION_NAME;
 import static org.nuxeo.elasticsearch.bulk.IndexAction.INDEX_UPDATE_ALIAS_PARAM;
@@ -26,6 +27,7 @@ import static org.nuxeo.elasticsearch.bulk.IndexAction.INDEX_UPDATE_ALIAS_PARAM;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import org.apache.commons.lang3.StringUtils;
@@ -44,6 +46,7 @@ import org.nuxeo.runtime.api.Framework;
  * @since 11.1
  */
 @WebObject(type = "elasticsearch")
+@Produces(APPLICATION_JSON)
 public class ElasticsearchObject extends DefaultObject {
 
     public static final String GET_ALL_DOCUMENTS_QUERY = "SELECT * from Document";

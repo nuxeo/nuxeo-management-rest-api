@@ -19,11 +19,12 @@
 
 package org.nuxeo.rest.management.blob.binaries;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.Response.Status.CONFLICT;
 
 import javax.ws.rs.DELETE;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import org.nuxeo.ecm.core.blob.DocumentBlobManager;
@@ -38,6 +39,7 @@ import org.nuxeo.runtime.api.Framework;
  * @since 11.1
  */
 @WebObject(type = "binaries")
+@Produces(APPLICATION_JSON)
 public class BinariesObject extends DefaultObject {
 
     /**
