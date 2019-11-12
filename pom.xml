@@ -9,7 +9,7 @@
 
   <groupId>org.nuxeo.ecm</groupId>
   <artifactId>nuxeo-management-rest-api-parent</artifactId>
-  <version>10.10-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <name>Nuxeo Management REST API Parent</name>
   <packaging>pom</packaging>
 
