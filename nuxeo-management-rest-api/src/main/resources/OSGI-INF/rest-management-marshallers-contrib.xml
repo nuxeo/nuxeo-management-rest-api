@@ -5,5 +5,7 @@
     <register class="org.nuxeo.rest.management.probes.ProbeInfoListWriter" enable="true" />
     <register class="org.nuxeo.rest.management.probes.ProbeStatusWriter" enable="true" />
     <register class="org.nuxeo.rest.management.distribution.SimplifiedServerInfoWriter" enable="true" />
+    <register class="org.nuxeo.rest.management.migration.MigrationJsonWriter" enable="true" />
+    <register class="org.nuxeo.rest.management.migration.MigrationListJsonWriter" enable="true" />
   </extension>
 </component>
