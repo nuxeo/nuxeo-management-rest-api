@@ -2,7 +2,7 @@
 <package type="addon" name="nuxeo-management-rest-api" version="@VERSION@">
 <title>Nuxeo Management REST API</title>
 <description>
-  <p>The Management REST API adds a set of REST endpoints allowing to manage the Nuxeo Platform.</p>
+  <p>The Nuxeo Management REST API adds a set of REST endpoints for the management of the Nuxeo Platform.</p>
 </description>
 <home-page>https://doc.nuxeo.com/nxdoc/nuxeo-csv</home-page>
 <vendor>Nuxeo</vendor>
