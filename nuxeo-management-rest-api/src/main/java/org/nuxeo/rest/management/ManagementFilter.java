@@ -58,7 +58,7 @@ public class ManagementFilter extends HttpFilter {
     }
 
     protected boolean requestIsOnConfiguredPort(ServletRequest request) {
-        int port = request.getServerPort();
+        int port = request.getLocalPort();
         String configPort = Framework.getProperty(HTTP_PORT_PROPERTY, Framework.getProperty(PARAM_HTTP_PORT));
 
         return Integer.parseInt(configPort) == port;
