@@ -43,7 +43,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 /**
  * @since 1.0.1
  */
-@Deploy("org.nuxeo.runtime.migration.tests:OSGI-INF/dummy-migration.xml")
+@Deploy("org.nuxeo.rest.management.test:OSGI-INF/dummy-migration-steps.xml")
 public class TestMigrationObject extends ManagementBaseTest {
 
     protected static final String DUMMY_MIGRATION = "dummy-migration";
