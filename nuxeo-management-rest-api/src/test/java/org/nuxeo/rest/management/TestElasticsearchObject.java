@@ -19,7 +19,7 @@
 
 package org.nuxeo.rest.management;
 
-import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
 import static org.junit.Assert.assertEquals;
@@ -144,7 +144,7 @@ public class TestElasticsearchObject extends ManagementBaseTest {
         // Launch the ES indexing
         String path = String.format(ES_INDEXING_PATH, "unExistingRepository");
         try (CloseableClientResponse response = httpClientRule.post(path, null)) {
-            assertEquals(SC_INTERNAL_SERVER_ERROR, response.getStatus());
+            assertEquals(SC_BAD_REQUEST, response.getStatus());
         }
     }
 
